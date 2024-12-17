@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gửi Thông Báo</title>
+  </head>
+  <body>
+    <h1>Demo Thông Báo Đẩy</h1>
+    <button id="enableNotifications">Bật Thông Báo</button>
+
+    <script>
+      // Kiểm tra nếu trình duyệt hỗ trợ Service Workers và Notification
+      if ("serviceWorker" in navigator && "Notification" in window) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then((reg) => console.log("Service Worker đăng ký thành công!", reg))
+          .catch((err) =>
+            console.error("Service Worker đăng ký thất bại:", err)
+          );
+      }
+
+      const enableNotificationsBtn = document.getElementById(
+        "enableNotifications"
+      );
+      enableNotificationsBtn.addEventListener("click", () => {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            alert("Thông báo đã được bật!");
+            scheduleNotification();
+          } else {
+            alert("Bạn đã từ chối quyền thông báo!");
+          }
+        });
+      });
+
+      // Lên lịch gửi thông báo sau 5 giây
+      function scheduleNotification() {
+        navigator.serviceWorker.ready.then((registration) => {
+          setTimeout(() => {
+            registration.showNotification("🔔 Thông Báo Nhắc Nhở", {
+              body: "Bạn đã lâu chưa quay lại trang web!",
+              icon: "icon.png", // Đường dẫn tới icon
+              vibrate: [200, 100, 200], // Rung khi thông báo (trên điện thoại)
+              tag: "reminder-notification",
+            });
+          }, 5000); // Gửi thông báo sau 5 giây
+        });
+      }
+    </script>
+  </body>
+</html>
