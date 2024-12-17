@@ -33,20 +33,20 @@
           }
         });
       });
-
+ 
       // Lên lịch gửi thông báo sau 5 giây
-      function scheduleNotification() {
-        navigator.serviceWorker.ready.then((registration) => {
-          setTimeout(() => {
+     function scheduleNotification() {
+    navigator.serviceWorker.ready.then(registration => {
+        setInterval(() => {
             registration.showNotification("🔔 Thông Báo Nhắc Nhở", {
-              body: "Bạn đã lâu chưa quay lại trang web!",
-              icon: "icon.png", // Đường dẫn tới icon
-              vibrate: [200, 100, 200], // Rung khi thông báo (trên điện thoại)
-              tag: "reminder-notification",
+                body: "Bạn đã lâu chưa quay lại trang web!",
+                icon: "icon.png",
+                vibrate: [200, 100, 200],
+                tag: "reminder-notification"
             });
-          }, 5000); // Gửi thông báo sau 5 giây
-        });
-      }
+        }, 60000); // Gửi thông báo mỗi 60 giây (1 phút)
+    });
+}
     </script>
   </body>
 </html>
